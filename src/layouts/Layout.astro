@@ -1,9 +1,9 @@
 ---
-import CMS from 'netlify-cms-app'
-// Initialize the CMS object
-CMS.init()
-// Now the registry is available via the CMS object.
-CMS.registerPreviewTemplate('my-template', MyTemplate)
+// import CMS from 'netlify-cms-app'
+// // Initialize the CMS object
+// CMS.init()
+// // Now the registry is available via the CMS object.
+// CMS.registerPreviewTemplate('my-template', MyTemplate)
 
 const { title } = Astro.props;
 ---
@@ -11,6 +11,7 @@ const { title } = Astro.props;
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 		<meta charset="UTF-8" />
 		<meta name="description" content="Astro description">
 		<meta name="viewport" content="width=device-width" />
@@ -20,6 +21,17 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<slot />
+		<script>
+			if (window.netlifyIdentity) {
+			  window.netlifyIdentity.on("init", user => {
+				if (!user) {
+				  window.netlifyIdentity.on("login", () => {
+					document.location.href = "/admin/";
+				  });
+				}
+			  });
+			}
+		  </script>
 	</body>
 </html>
 <style is:global>
